@@ -1,0 +1,102 @@
+﻿@model IEnumerable<PracticalTest.Models.CustomerViewModel>
+@{ ViewBag.Title = "List";
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
+<h2> Customer List</h2>
+
+@using (Html.BeginForm())
+{
+
+<table class="table" style="margin-top:30px">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Classification", "List", new { sortOrder = ViewBag.ClassificationParam }) </th>
+            <th>@Html.ActionLink("Name", "List", new { sortOrder = ViewBag.NameParam })</th>
+            <th>@Html.ActionLink("Phone", "List", new { sortOrder = ViewBag.PhoneParam }) </th>
+            <th>@Html.ActionLink("Gender", "List", new { sortOrder = ViewBag.GenderParam }) </th>
+            <th>@Html.ActionLink("City", "List", new { sortOrder = ViewBag.CityParam }) </th>
+            <th>@Html.ActionLink("Region", "List", new { sortOrder = ViewBag.RegionParam }) </th>
+            <th>@Html.ActionLink("Last Purchase", "List", new { sortOrder = ViewBag.LastPurchaseParam }) </th>
+
+            @if (Session["IsUserAdmin"] != null && Session["IsUserAdmin"].ToString().Equals("1"))
+            {
+                <th>@Html.ActionLink("Seller", "List", new { sortOrder = ViewBag.SellerParam }) </th>
+            }
+        </tr>
+        <tr>
+            <td>
+                @Html.DropDownList("classificationID", (List<SelectListItem>)ViewBag.classification, new { @id = "classificationID", @class = "form-control select", onchange = "this.form.submit();" })
+            </td>
+            <td>
+                @Html.TextBox("name", "", new { @id = "Name", @class = "form-control text-box", @style = "" })
+            </td>
+            <td></td>
+            <td>
+                @Html.DropDownList("genderId", (List<SelectListItem>)ViewBag.gender, new { @id = "genderId", @class = "form-control select", @style = "width:100px", onchange = "this.form.submit();" })
+            </td>
+            <td>
+                @Html.DropDownList("cityId", (List<SelectListItem>)ViewBag.city, new { @id = "cityId", @class = "form-control select", @style = "", onchange = "this.form.submit();" })
+            </td>
+            <td>
+                @Html.DropDownList("region", (List<SelectListItem>)ViewBag.region, new { @id = "region", @class = "form-control select", @style = "" })
+            </td>
+            <td>
+                <div style="padding-top:0px;">
+                    <div style="float:left;padding-top:0px;">
+                        @Html.TextBox("lastPurchase", "", new { @id = "lastPurchase", @class = "form-control datepicker", @style = "width:80px" })
+                    </div>
+                    <div style="float:left;padding-left:5px;padding-top:0px;">
+                        @Html.TextBox("lastPurchaseUntil", "", new { @id = "lastPurchaseUntil", @class = "form-control datepicker", @style = "width:80px" })
+                    </div>
+                </div>
+            </td>
+
+            @if (Session["IsUserAdmin"] != null && Session["IsUserAdmin"].ToString().Equals("1"))
+            {
+                <td>
+                    @Html.DropDownList("sellerId", (List<SelectListItem>)ViewBag.seller, new { @id = "sellerId", @class = "form-control select", onchange = "this.form.submit();" })
+                </td>
+            }
+            <td>
+                <button type="submit"><span><i class="icone-grande glyphicon glyphicon-search"></i></span></button>
+                <button type="submit" name="clearFields" id="clearFields" value="1"><span><i class="icone-grande glyphicon glyphicon-remove-circle"></i></span></button>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Classification)</td>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Name)</td>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Phone)</td>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Gender)</td>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.City)</td>
+                        <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Region)</td>
+                        <td class="col-md-2">@Html.DisplayFor(ModelItem => item.LastPurchase)</td>
+                        @if (Session["IsUserAdmin"] != null && Session["IsUserAdmin"].ToString().Equals("1"))
+                        {
+                            <td class="col-sm-1">@Html.DisplayFor(ModelItem => item.Seller)</td>
+                        }
+                        <td class="col-sm-1"></td>
+                    </tr>
+                }
+            }
+        }
+
+    </tbody>
+</table>
+
+
+
+            }
